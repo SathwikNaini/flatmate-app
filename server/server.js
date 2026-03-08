@@ -27,6 +27,11 @@ app.use(
         return callback(null, true);
       }
 
+      // Allow any vercel.app domain
+      if (origin.match(/.*\.vercel\.app$/)) {
+        return callback(null, true);
+      }
+
       callback(new Error('Not allowed by CORS'));
     },
     credentials: true
@@ -51,6 +56,9 @@ const io = new Server(server, {
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
       if (origin.match(/^http:\/\/localhost:\d+$/)) {
+        return callback(null, true);
+      }
+      if (origin.match(/.*\.vercel\.app$/)) {
         return callback(null, true);
       }
       callback(new Error('Not allowed by CORS'));
