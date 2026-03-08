@@ -179,7 +179,14 @@ router.get('/:userId', authenticateToken, async (req, res) => {
 // Create or update profile (POST)
 router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { name, age, bio, location, preferences, avatar_base64 } = req.body;
+    const {
+      name = null,
+      age = null,
+      bio = null,
+      location = null,
+      preferences = null,
+      avatar_base64 = null
+    } = req.body;
 
     console.log('Profile update request for user:', req.user.id);
     console.log('Update data:', { name, age, bio, location, preferences, avatar_included: !!avatar_base64 });
@@ -216,7 +223,14 @@ router.post('/', authenticateToken, async (req, res) => {
 // Update profile (PUT) - Alternative RESTful endpoint
 router.put('/update', authenticateToken, async (req, res) => {
   try {
-    const { name, age, bio, location, preferences, avatar_base64 } = req.body;
+    const {
+      name = null,
+      age = null,
+      bio = null,
+      location = null,
+      preferences = null,
+      avatar_base64 = null
+    } = req.body;
 
     console.log('Profile PUT update request for user:', req.user.id);
     console.log('Update data:', { name, age, bio, location, preferences, avatar_included: !!avatar_base64 });
