@@ -2,7 +2,7 @@
 
 FlatmateFinder is a full-stack, real-time web application designed to help users find their ideal flatmates based on compatibility, location, and lifestyle preferences. 
 
-## 🚀 Features
+## Features
 - **Real-Time Chat:** Instant messaging powered by **Socket.io** with live typing indicators.
 - **Voice & Video Calls:** Built-in peer-to-peer browser calling via **WebRTC**.
 - **User Discovery & Matching:** Browse and search for potential flatmates by location, budget, gender, and occupation with automated compatibility scoring.
@@ -17,7 +17,7 @@ FlatmateFinder is a full-stack, real-time web application designed to help users
 - **Database:** MySQL (mysql2/promise)
 - **Storage:** Local disk uploads (`multer`)
 
-## 📦 Local Installation & Setup
+## Local Installation & Setup
 
 1. **Clone the repository:**
    ```bash
@@ -55,5 +55,5 @@ FlatmateFinder is a full-stack, real-time web application designed to help users
 6. **Open in Browser:**
    Navigate to `http://localhost:5173` to view the application!
 
-## 🤝 Contributing
+##  Contributing
 Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
