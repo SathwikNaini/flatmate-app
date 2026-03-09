@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS profiles (
   bio TEXT,
   location VARCHAR(255),
   preferences TEXT,
+  profile_pic VARCHAR(500),
+  avatar_base64 LONGTEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

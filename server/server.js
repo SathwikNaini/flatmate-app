@@ -22,13 +22,28 @@ app.use(
       // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
 
-      // Allow localhost on any port
+      // Allow localhost on any port (for development)
       if (origin && origin.match && origin.match(/^http:\/\/localhost:\d+$/)) {
         return callback(null, true);
       }
 
       // Allow any vercel.app domain
       if (origin && origin.match && origin.match(/.*\.vercel\.app$/)) {
+        return callback(null, true);
+      }
+
+      // Allow any onrender.com domain
+      if (origin && origin.match && origin.match(/.*\.onrender\.com$/)) {
+        return callback(null, true);
+      }
+
+      // Allow any netlify.app domain
+      if (origin && origin.match && origin.match(/.*\.netlify\.app$/)) {
+        return callback(null, true);
+      }
+
+      // In production, allow all origins (you can restrict this later)
+      if (process.env.NODE_ENV === 'production') {
         return callback(null, true);
       }
 
@@ -61,9 +76,19 @@ const io = new Server(server, {
       if (origin && origin.match && origin.match(/.*\.vercel\.app$/)) {
         return callback(null, true);
       }
+      if (origin && origin.match && origin.match(/.*\.onrender\.com$/)) {
+        return callback(null, true);
+      }
+      if (origin && origin.match && origin.match(/.*\.netlify\.app$/)) {
+        return callback(null, true);
+      }
+      if (process.env.NODE_ENV === 'production') {
+        return callback(null, true);
+      }
       callback(new Error('Not allowed by CORS'));
     },
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
@@ -169,6 +194,52 @@ app.get("/", (req, res) => {
 // Health check
 app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+// Migration endpoint (temporary - for fixing avatar column)
+app.get("/api/migrate", async (req, res) => {
+  try {
+    console.log('🔄 Running avatar migration...');
+
+    // Check if columns exist
+    const [columns] = await pool.execute(
+      `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
+       WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'profiles'`,
+      [process.env.DB_NAME]
+    );
+
+    const columnNames = columns.map(col => col.COLUMN_NAME);
+    const results = [];
+
+    // Add avatar_base64 if it doesn't exist
+    if (!columnNames.includes('avatar_base64')) {
+      await pool.execute('ALTER TABLE profiles ADD COLUMN avatar_base64 LONGTEXT');
+      results.push('✅ Added avatar_base64 column');
+    } else {
+      results.push('✓ avatar_base64 column already exists');
+    }
+
+    // Add profile_pic if it doesn't exist
+    if (!columnNames.includes('profile_pic')) {
+      await pool.execute('ALTER TABLE profiles ADD COLUMN profile_pic VARCHAR(500)');
+      results.push('✅ Added profile_pic column');
+    } else {
+      results.push('✓ profile_pic column already exists');
+    }
+
+    console.log('✅ Migration completed');
+    res.json({
+      success: true,
+      message: 'Migration completed successfully',
+      results
+    });
+  } catch (error) {
+    console.error('❌ Migration failed:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
 });
 
 // API Routes

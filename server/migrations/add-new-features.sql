@@ -7,6 +7,13 @@ USE flatmate_db;
 ALTER TABLE profiles 
 ADD COLUMN IF NOT EXISTS is_online BOOLEAN DEFAULT FALSE;
 
+-- Add profile_pic and avatar_base64 columns to profiles table
+ALTER TABLE profiles 
+ADD COLUMN IF NOT EXISTS profile_pic VARCHAR(500);
+
+ALTER TABLE profiles 
+ADD COLUMN IF NOT EXISTS avatar_base64 LONGTEXT;
+
 -- Create notifications table
 CREATE TABLE IF NOT EXISTS notifications (
   id INT AUTO_INCREMENT PRIMARY KEY,

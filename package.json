@@ -6,11 +6,16 @@
   "scripts": {
     "dev": "vite",
     "server": "node server/server.js",
+    "start": "node server/server.js",
     "setup-db": "node setup-database.js",
     "migrate": "node run-migrations.js",
+    "migrate-avatar": "node run-avatar-migration.js",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check-deployment": "node check-deployment.js",
+    "verify-setup": "node verify-setup.js",
+    "diagnose": "node diagnose.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

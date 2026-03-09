@@ -189,7 +189,7 @@ router.post('/', authenticateToken, async (req, res) => {
     } = req.body;
 
     console.log('Profile update request for user:', req.user.id);
-    console.log('Update data:', { name, age, bio, location, preferences, avatar_included: !!avatar_base64 });
+    console.log('Update data:', { name, age, bio, location, preferences, hasAvatar: !!avatar_base64 });
 
     const [existing] = await pool.execute(
       'SELECT * FROM profiles WHERE user_id = ?',
@@ -233,7 +233,7 @@ router.put('/update', authenticateToken, async (req, res) => {
     } = req.body;
 
     console.log('Profile PUT update request for user:', req.user.id);
-    console.log('Update data:', { name, age, bio, location, preferences, avatar_included: !!avatar_base64 });
+    console.log('Update data:', { name, age, bio, location, preferences, hasAvatar: !!avatar_base64 });
 
     const [existing] = await pool.execute(
       'SELECT * FROM profiles WHERE user_id = ?',
