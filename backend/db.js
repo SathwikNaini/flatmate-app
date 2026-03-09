@@ -20,7 +20,7 @@ const dbConfig = {
 // Add SSL configuration for production (required by most cloud MySQL providers)
 if (process.env.NODE_ENV === 'production') {
   dbConfig.ssl = {
-    rejectUnauthorized: true
+    rejectUnauthorized: false  // Accept self-signed certificates from cloud providers
   };
 }
 
