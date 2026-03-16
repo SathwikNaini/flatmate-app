@@ -27,26 +27,6 @@ app.use(
         return callback(null, true);
       }
 
-      // Allow any vercel.app domain
-      if (origin && origin.match && origin.match(/.*\.vercel\.app$/)) {
-        return callback(null, true);
-      }
-
-      // Allow any onrender.com domain
-      if (origin && origin.match && origin.match(/.*\.onrender\.com$/)) {
-        return callback(null, true);
-      }
-
-      // Allow any netlify.app domain
-      if (origin && origin.match && origin.match(/.*\.netlify\.app$/)) {
-        return callback(null, true);
-      }
-
-      // In production, allow all origins (you can restrict this later)
-      if (process.env.NODE_ENV === 'production') {
-        return callback(null, true);
-      }
-
       callback(new Error('Not allowed by CORS'));
     },
     credentials: true
@@ -71,18 +51,6 @@ const io = new Server(server, {
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
       if (origin && origin.match && origin.match(/^http:\/\/localhost:\d+$/)) {
-        return callback(null, true);
-      }
-      if (origin && origin.match && origin.match(/.*\.vercel\.app$/)) {
-        return callback(null, true);
-      }
-      if (origin && origin.match && origin.match(/.*\.onrender\.com$/)) {
-        return callback(null, true);
-      }
-      if (origin && origin.match && origin.match(/.*\.netlify\.app$/)) {
-        return callback(null, true);
-      }
-      if (process.env.NODE_ENV === 'production') {
         return callback(null, true);
       }
       callback(new Error('Not allowed by CORS'));
@@ -176,7 +144,7 @@ io.on('connection', (socket) => {
 app.set('io', io);
 
 // Test route
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.json({
     message: "Flatmate API running 🚀",
     timestamp: new Date().toISOString(),
